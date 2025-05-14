@@ -9,11 +9,29 @@ window.addEventListener("load", function () {
 
   setTimeout(
     () => {
-      if (loader) {
-        loader.style.display = "none";
-        main.style.display = "flex";
-      }
+      if (loader) loader.style.display = "none";
+      if (main) main.style.display = "flex";
     },
     remaining > 0 ? remaining : 0
   );
 });
+
+const messageInput = document.getElementById("message-input");
+const messageButtonSave = document.getElementById("message-button-save");
+const messageButtonClear = document.getElementById("message-button-clear");
+
+messageButtonClear.addEventListener("click", () => {
+  messageInput.value = "";
+});
+
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("toggle-password");
+
+if (togglePassword && passwordInput) {
+  togglePassword.addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+  });
+}

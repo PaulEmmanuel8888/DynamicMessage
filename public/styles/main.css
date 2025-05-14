@@ -91,10 +91,79 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-height: 100vh;
+}
+.message-div h1 {
+  margin: 0;
+  padding: 0;
+}
+.recent-messages-div h1 {
+  margin: 0;
+  margin-top: 5vh;
+  padding: 0;
+}
+.message-div {
+  background-color: #fafdff;
+  height: 100%;
+  min-height: 400px;
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 .login-div {
   width: 100%;
 }
+
+@media (max-width: 600px) {
+  .message-div h1 {
+    font-size: 1.5rem;
+    margin: 5% auto;
+  }
+  .recent-messages-div h1 {
+    font-size: 1.5rem;
+    margin: 5% auto;
+    margin-top: 7vh;
+  }
+  .message-input {
+    height: 25vh;
+    max-height: 200px;
+  }
+  .message-button {
+    font-size: 0.8rem;
+  }
+}
+.password-wrapper {
+  position: relative;
+  width: 70%;
+  margin: 20px auto 0 auto;
+}
+
+#password {
+  width: 100%;
+  height: 3rem;
+  padding: 10px 40px 10px 10px; /* space on the right for the icon */
+  border: 1px solid #6cade5;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border ease-in 0.2s;
+}
+
+.toggle-icon {
+  position: absolute;
+  margin: auto;
+  right: 15px;
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
+
 .login-form {
   background-color: #fafdff;
   height: 100%;
@@ -113,11 +182,87 @@ body {
   width: 70%;
   height: 3rem;
   margin: 20px auto 0 auto;
-  padding: 4px;
+  padding: 10px;
   border: 1px solid #6cade5;
   border-radius: 10px;
   font-size: 1rem;
   transition: border ease-in 0.2s;
+}
+.message-input {
+  width: 80%;
+  height: 40vh;
+  margin: 20px auto 0 auto;
+  padding: 15px;
+  border: 1px solid #6cade5;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border ease-in 0.2s;
+  text-wrap: wrap;
+  resize: none;
+}
+.message-input:focus {
+  outline: none;
+  border: 2px solid #4dabf7;
+}
+
+/* WebKit-based browsers (Chrome, Edge, Safari) */
+.message-input::-webkit-scrollbar {
+  width: 10px;
+}
+
+.message-input::-webkit-scrollbar-track {
+  background: none;
+  border-radius: 10px;
+}
+
+.message-input::-webkit-scrollbar-thumb {
+  background: #5699e1;
+  border-radius: 10px;
+}
+
+.message-input::-webkit-scrollbar-thumb:hover {
+  background: #346ba7;
+}
+
+/* Firefox */
+.message-input {
+  scrollbar-width: thin;
+  scrollbar-color: #5699e1 #f1f1f1;
+}
+
+.message-options-div {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.message-button {
+  width: 48%;
+  background-color: #5699e1;
+  color: white;
+  height: 3rem;
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  border: 1px solid #6cade5;
+  border-radius: 10px;
+  transition: border ease-in 0.2s;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: color ease-in 0.2s;
+}
+.message-button:hover {
+  background-color: #346ba7;
+}
+.message-button-clear {
+  background-color: white;
+  color: #5699e1;
+  border: 1px solid #6cade5;
+}
+.message-button-clear:hover {
+  color: white;
 }
 
 .login-form input:focus {
@@ -130,6 +275,10 @@ body {
   color: white;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 4s ease-in;
+}
+.submit-button:hover {
+  background-color: #346ba7;
 }
 
 h1 {

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <%- include('../partials/loader.ejs') %>
+
+    <div class="main-content" id="main-content">
+      <div class="message-div">
+        <h1>My Private Clipboard</h1>
+        <textarea
+          class="message-input"
+          name="message-input"
+          id="message-input"
+          placeholder="Enter text..."
+        ></textarea>
+        <form class="message-options-div" action="/save" method="POST">
+          <button type="submit" class="message-button" id="message-button-save">
+            Save Message
+          </button>
+          <button
+            type="button"
+            class="message-button message-button-clear"
+            id="message-button-clear"
+          >
+            Clear
+          </button>
+        </form>
+        <div class="recent-messages-div">
+          <h1>Recent Messages</h1>
+        </div>
+      </div>
+    </div>
+
+    <script defer src="/js/script.js"></script>
+  </body>
+</html>
+Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero possimus quod
+tenetur ipsam assumenda animi temporibus voluptatum autem molestiae eum quos
+voluptatibus et sapiente suscipit nobis repellat velit in vitae esse commodi
+modi, rerum omnis, corporis ratione. Optio amet, ratione ut dolor quam doloribus
+nulla numquam cupiditate, doloremque, ipsa sapiente. Dolor blanditiis veniam
+odio facere porro tempore cupiditate quibusdam consequuntur iure libero dolores
+voluptas, aperiam deleniti ipsam, fugiat vero molestiae nesciunt magnam animi
+aut ut, non vel? Eligendi voluptas officiis expedita laboriosam suscipit. Illo
+harum velit pariatur nemo nam possimus ab fugit libero. Velit, facere error
+ratione et at tenetur.
