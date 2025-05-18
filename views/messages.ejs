@@ -158,5 +158,49 @@
     </div>
 
     <script defer src="/js/script.js"></script>
+    <script>
+      const eventSource = new EventSource("/events");
+
+      eventSource.onmessage = function (event) {
+        const message = JSON.parse(event.data);
+        console.log("New message:", message);
+
+        const container = document.querySelector(".recent-messages");
+
+        // Create the full message HTML with buttons (replace message.id if available)
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("main-message-div");
+        newDiv.innerHTML = `
+    <div class="recent-message">
+      <span class="recent-message-text-div">
+        <p class="recent-message-text" id="message-${message.id}">${message.messageContent}</p>
+      </span>
+      <div class="recent-message-dates">
+        <p>${message.date}</p>
+        <p>${message.time}</p>
+      </div>
+    </div>
+    <div class="recent-message-options">
+      <div class="message-delete">
+        <form action="/delete/${message.id}" method="POST">
+          <button type="submit">
+            <!-- SVG icon here -->
+          </button>
+        </form>
+      </div>
+      <div class="message-copy">
+        <form onsubmit="return false;">
+          <button class="copy-button" data-message-id="message-${message.id}">
+            <!-- SVG icon here -->
+          </button>
+        </form>
+      </div>
+    </div>
+  `;
+
+        container.prepend(newDiv);
+        addMessageListeners(newDiv); // <-- attach event listeners to this new div only
+      };
+    </script>
   </body>
 </html>

@@ -29,6 +29,22 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+const clients = [];
+
+app.get("/events", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders(); // send headers right away
+
+  clients.push(res);
+
+  req.on("close", () => {
+    const index = clients.indexOf(res);
+    if (index !== -1) clients.splice(index, 1);
+  });
+});
+
 let isAdmin = false;
 
 app.get("/", (req, res) => {
@@ -87,26 +103,19 @@ app.post("/login", (req, res) => {
 app.post("/save", async (req, res) => {
   try {
     const text = req.body.message_input;
-    const id = 1;
-
     if (text.trim() !== "") {
-      const now = new Date(Date.now());
-
-      // Format time
+      const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "PM" : "AM";
-      hours = hours % 12 || 12; // convert to 12-hour format
+      hours = hours % 12 || 12;
       const formattedTime = `${hours}:${minutes} ${ampm}`;
-
-      // Format date as dd/mm/yy
       const day = now.getDate().toString().padStart(2, "0");
-      const month = (now.getMonth() + 1).toString().padStart(2, "0"); // months are 0-based
+      const month = (now.getMonth() + 1).toString().padStart(2, "0");
       const year = now.getFullYear().toString().slice(-2);
       const formattedDate = `${day}/${month}/${year}`;
 
       const message = {
-        id: id,
         time: formattedTime,
         date: formattedDate,
         timeStamp: Date.now(),
@@ -114,6 +123,8 @@ app.post("/save", async (req, res) => {
       };
 
       insertMessage(message);
+
+      sendEventToAllClients(message); // 🔥 push update to all clients
 
       res.redirect("/messages");
     }
@@ -151,6 +162,10 @@ function checkCredentials(
   } catch (error) {
     console.log("Error checking credentials:", error);
   }
+}
+function sendEventToAllClients(message) {
+  const data = `data: ${JSON.stringify(message)}\n\n`;
+  clients.forEach((client) => client.write(data));
 }
 
 app.listen(port, (req, res) => {
