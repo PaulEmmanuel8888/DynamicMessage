@@ -154,7 +154,6 @@ function checkCredentials(
       currentUsername === adminUsername &&
       currentPassword === adminPassword
     ) {
-      console.log("Logged in successfully.");
       return true;
     } else {
       return false;
