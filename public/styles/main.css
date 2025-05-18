@@ -8,6 +8,7 @@
 
 body {
   background-color: #e2edfa;
+  user-select: none;
 }
 /* From Uiverse.io by Hashir-Ahmed123 */
 @keyframes drop {
@@ -92,6 +93,7 @@ body {
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  margin: 15px 0px;
 }
 .message-div h1 {
   margin: 0;
@@ -120,24 +122,6 @@ body {
   width: 100%;
 }
 
-@media (max-width: 600px) {
-  .message-div h1 {
-    font-size: 1.5rem;
-    margin: 5% auto;
-  }
-  .recent-messages-div h1 {
-    font-size: 1.5rem;
-    margin: 5% auto;
-    margin-top: 7vh;
-  }
-  .message-input {
-    height: 25vh;
-    max-height: 200px;
-  }
-  .message-button {
-    font-size: 0.8rem;
-  }
-}
 .password-wrapper {
   position: relative;
   width: 70%;
@@ -158,12 +142,17 @@ body {
   position: absolute;
   margin: auto;
   right: 15px;
-  top: 60%;
+  top: 64%;
   transform: translateY(-50%);
   cursor: pointer;
   color: #888;
 }
-
+.new-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .login-form {
   background-color: #fafdff;
   height: 100%;
@@ -188,7 +177,7 @@ body {
   font-size: 1rem;
   transition: border ease-in 0.2s;
 }
-.message-input {
+.message_input {
   width: 80%;
   height: 40vh;
   margin: 20px auto 0 auto;
@@ -200,32 +189,32 @@ body {
   text-wrap: wrap;
   resize: none;
 }
-.message-input:focus {
+.message_input:focus {
   outline: none;
   border: 2px solid #4dabf7;
 }
 
 /* WebKit-based browsers (Chrome, Edge, Safari) */
-.message-input::-webkit-scrollbar {
+.message_input::-webkit-scrollbar {
   width: 10px;
 }
 
-.message-input::-webkit-scrollbar-track {
+.message_input::-webkit-scrollbar-track {
   background: none;
   border-radius: 10px;
 }
 
-.message-input::-webkit-scrollbar-thumb {
+.message_input::-webkit-scrollbar-thumb {
   background: #5699e1;
   border-radius: 10px;
 }
 
-.message-input::-webkit-scrollbar-thumb:hover {
+.message_input::-webkit-scrollbar-thumb:hover {
   background: #346ba7;
 }
 
 /* Firefox */
-.message-input {
+.message_input {
   scrollbar-width: thin;
   scrollbar-color: #5699e1 #f1f1f1;
 }
@@ -286,4 +275,162 @@ h1 {
   margin-top: -100px;
   margin-bottom: 10px;
   color: #264479;
+}
+/* Recent Message Section */
+.recent-messages-div {
+  width: 100%;
+  text-align: center;
+}
+.main-message-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.recent-messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  padding: 5px;
+}
+.recent-message-options {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.recent-messages:last-child {
+  margin-bottom: 10px;
+}
+.recent-message {
+  width: 95%;
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  margin: 7px 0;
+  cursor: pointer;
+  color: black;
+  transition: color ease-in 0.2s;
+}
+
+.recent-message:hover {
+  color: #04befe;
+}
+.recent-message-text-div {
+  max-width: 500px;
+  display: inline-block;
+}
+.recent-message-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  margin-top: 3px;
+}
+.recent-message-dates {
+  font-size: 0.8rem;
+  color: gray;
+  margin: auto 0;
+}
+.recent-message-options {
+  display: none;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 10px auto;
+  height: 3rem;
+  transition: all ease-in 0.2s;
+}
+.recent-message-options form {
+  width: 100%;
+}
+.recent-message-options form button {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+}
+.message-delete {
+  width: 48%;
+  margin: auto 0;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  padding: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+.message-copy {
+  width: 40%;
+  margin: auto 0;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  padding: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+.message-delete:hover,
+.message-copy:hover {
+  transform: scale(1.1);
+  transition: transform ease-in-out 0.2s;
+}
+.delete-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+.copy-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+.active .recent-message-text {
+  color: #04befe;
+}
+.active .recent-message-options {
+  display: flex;
+}
+
+.copy_successful {
+  background-color: lightgreen;
+}
+.copy_failed {
+  background-color: rgb(203, 99, 120);
+}
+
+/* Mobile settings (Note: Should always be at the bottom) */
+@media (max-width: 600px) {
+  .message-div h1 {
+    font-size: 1.5rem;
+    margin: 5% auto;
+  }
+  .recent-messages-div h1 {
+    font-size: 1.5rem;
+    margin: 5% auto;
+    margin-top: 7vh;
+  }
+  .message_input {
+    height: 25vh;
+    max-height: 200px;
+  }
+  .message-button {
+    font-size: 0.8rem;
+  }
+  .recent-message-text-div {
+    max-width: 200px;
+  }
+  .delete-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .copy-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }

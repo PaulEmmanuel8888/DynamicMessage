@@ -7,6 +7,14 @@ import ejs from "ejs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import {
+  initDatabase,
+  insertMessage,
+  getMessages,
+  deleteMessage,
+} from "./public/js/database.js";
+
+await initDatabase();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,6 +29,8 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+let isAdmin = false;
+
 app.get("/", (req, res) => {
   try {
     res.render("index.ejs");
@@ -29,9 +39,20 @@ app.get("/", (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-app.get("/messages", (req, res) => {
+
+app.get("/messages", async (req, res) => {
   try {
-    res.render("messages.ejs");
+    if (isAdmin === true) {
+      const recentMessages = await getMessages();
+
+      const sortedMessages = recentMessages.sort(
+        (a, b) => b.timeStamp - a.timeStamp
+      );
+
+      res.render("messages.ejs", { allMessages: sortedMessages });
+    } else {
+      res.redirect("/");
+    }
   } catch (error) {
     console.error("Error rendering page:", error);
     res.status(500).send("Internal Server Error");
@@ -43,16 +64,17 @@ app.post("/login", (req, res) => {
     const username = req.body.username.trim();
     const password = req.body.password.trim();
 
-    const isAdmin = checkCredentials(
+    const isAdminCheck = checkCredentials(
       username,
       password,
       adminUsername,
       adminPassword
     );
 
-    if (isAdmin === true) {
+    if (isAdminCheck === true) {
+      isAdmin = true;
       res.redirect("messages");
-    } else if (isAdmin === false) {
+    } else if (isAdminCheck === false) {
       console.log("Unauthorized user.");
       res.redirect("/");
     }
@@ -62,6 +84,54 @@ app.post("/login", (req, res) => {
   }
 });
 
+app.post("/save", async (req, res) => {
+  try {
+    const text = req.body.message_input;
+    const id = 1;
+
+    if (text.trim() !== "") {
+      const now = new Date(Date.now());
+
+      // Format time
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12; // convert to 12-hour format
+      const formattedTime = `${hours}:${minutes} ${ampm}`;
+
+      // Format date as dd/mm/yy
+      const day = now.getDate().toString().padStart(2, "0");
+      const month = (now.getMonth() + 1).toString().padStart(2, "0"); // months are 0-based
+      const year = now.getFullYear().toString().slice(-2);
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const message = {
+        id: id,
+        time: formattedTime,
+        date: formattedDate,
+        timeStamp: Date.now(),
+        messageContent: text,
+      };
+
+      insertMessage(message);
+
+      res.redirect("/messages");
+    }
+  } catch (error) {
+    console.error("Error rendering page:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.post("/delete/:id", (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    deleteMessage(id);
+    res.redirect("/messages");
+  } catch (error) {
+    console.error("Error deleting message:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 function checkCredentials(
   currentUsername,
   currentPassword,
